@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'log_manager'
-  s.version     = '0.1.3'
+  s.version     = '0.2.0'
   s.date        = '2017-03-01'
   s.summary     = 'Improved Logger'
   s.description = 'Manages the variables used to print logs'

@@ -39,7 +39,12 @@ class LogManager
     @logger.debug?
   end
 
-  def error(progname = nil, exception: nil, message: nil, supress_notification: false, &block)
+  def error(progname = nil,
+            exception: nil,
+            message: nil,
+            supress_notification: false,
+            custom_params: nil,
+            &block)
     return unless @logger.error?
 
     block_message = yield if block
@@ -64,9 +69,9 @@ class LogManager
 
     # notice error
     if exception
-      @agent_notifier.notice_error(exception)
+      @agent_notifier.notice_error(exception, custom_params: custom_params || @data)
     else
-      @agent_notifier.notice_error(final_message)
+      @agent_notifier.notice_error(final_message, custom_params: custom_params || @data)
     end
   end
 

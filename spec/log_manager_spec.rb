@@ -83,18 +83,18 @@ describe LogManager do
 
     it 'notifies error message to agent (aka. New Relic)' do
       msg = 'Error'
-      expect(agent_notifier).to receive(:notice_error).with(msg)
+      expect(agent_notifier).to receive(:notice_error).with(msg, custom_params: { any: 1 })
       expect(logger).to receive(:error).with('Message: Error. Data: any: 1. ')
       @log_manager.error(msg)
     end
 
     it 'notifies exception and log it\'s class, message and backtrace' do
-      expect(agent_notifier).to receive(:notice_error)
       expect(logger).to receive(:error).with(%r{^Exception: ZeroDivisionError. Message: divided by 0. Data: any: 1. Backtrace: \/\w+\/\w+\/\w+\/\w+\/spec\/log_manager_spec.rb:\d+:in `\/' \| .*})
 
       begin
         1 / 0
       rescue => e
+        expect(agent_notifier).to receive(:notice_error).with(e, custom_params: { any: 1 })
         @log_manager.error(exception: e)
       end
     end
