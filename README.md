@@ -9,7 +9,7 @@ A Logger that carries data/variables constantly used on log messages.
 
 
 This class uses method_missing to create dinamic logging messages.
-If the method finishes with `_start`, `_finish`, ou `_iteration`,
+If the method finishes with `_start`, `_finish`, or `_iteration`,
 the correspondent log messages will be created.
 Usage example:
 ```
