@@ -146,4 +146,19 @@ describe LogManager do
       end
     end
   end
+
+  describe '#trace_on_agent' do
+    subject do
+      described_class.new(logger: logger,
+                          data: { foo: :bar },
+                          config: { agent_notifier: agent_notifier})
+    end
+
+    it do
+      expect(agent_notifier).to receive(:notice_error).with('Foo happened',
+                                                            trace_only: true,
+                                                            custom_params: { foo: :bar })
+      subject.trace_on_agent('Foo happened')
+    end
+  end
 end
