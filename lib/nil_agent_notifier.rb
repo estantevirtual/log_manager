@@ -1,4 +1,4 @@
 class NilAgentNotifier
-  def notice_error(exception)
+  def notice_error(exception, opts)
   end
 end

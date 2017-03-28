@@ -146,4 +146,29 @@ describe LogManager do
       end
     end
   end
+
+  context 'when notifying agent' do
+    subject do
+      described_class.new(logger: logger,
+                          data: { foo: :bar },
+                          config: { agent_notifier: agent_notifier })
+    end
+
+    describe 'that a trace ocurred, without raising an erro' do
+      it do
+        expect(agent_notifier).to receive(:notice_error).with('Foo happened',
+                                                              trace_only: true,
+                                                              custom_params: { foo: :bar })
+        subject.trace_on_agent('Foo happened')
+      end
+    end
+
+    describe 'that an error ocurred' do
+      it do
+        expect(agent_notifier).to receive(:notice_error).with('Foo happened',
+                                                              custom_params: { foo: :bar })
+        subject.error_on_agent('Foo happened')
+      end
+    end
+  end
 end
