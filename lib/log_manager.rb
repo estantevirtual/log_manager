@@ -24,7 +24,7 @@ class LogManager
 
   def info(text = nil, notify_agent: false, &block)
     text = yield if block
-    @agent_notifier.notice_error(text, trace_only: true, custom_params: @data) if notify_agent
+    trace_on_agent(message: text) if notify_agent
     @logger.info(log(text))
   end
 
@@ -32,8 +32,7 @@ class LogManager
     return unless debug?
 
     text = yield if block
-
-    @agent_notifier.notice_error(text, trace_only: true, custom_params: @data) if notify_agent
+    trace_on_agent(message: text) if notify_agent
     @logger.debug(log(text))
   end
 
@@ -78,12 +77,20 @@ class LogManager
   def error_on_agent(progname,
                      exception: nil, message: nil, custom_params: nil, &block)
 
-    notify_agent(progname, exception: exception, message: message, custom_params: custom_params, trace_only: true, &block)
+    notify_agent(progname,
+                 exception: exception,
+                 message: message,
+                 custom_params: custom_params,
+                 trace_only: false, &block)
   end
 
   def trace_on_agent(progname,
                      exception: nil, message: nil, custom_params: nil, &block)
-    notify_agent(progname, exception: exception, message: message, custom_params: custom_params, trace_only: true, &block)
+    notify_agent(progname,
+                 exception: exception,
+                 message: message,
+                 custom_params: custom_params,
+                 trace_only: true, &block)
   end
 
   def string
